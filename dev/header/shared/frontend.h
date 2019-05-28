@@ -364,7 +364,7 @@ void printIcon(int state,int posX, int posY, int colorfg,int colorbg){
 
 void printHints(){
     printfPosition(6,15,"     F1     - HINTS TABLE");
-    printfPosition(6,16,"  CapsLock  - SUSTAIN TOGLE");
+    printfPosition(6,16,"  CapsLock  - SUSTAIN TOGGLE");
     printfPosition(6,17,"  LeftShift - OCTAVE DECREASE");
     printfPosition(6,18," RightShift - OCTAVE INCREASE");
     printfPosition(6,19,"    SPACE   - METRONOME TOGGLE");
@@ -372,16 +372,18 @@ void printHints(){
     printfPosition(6,21,"  ArrowDown - TEMPO DECREASE");
     printfPosition(6,22,"  ArrowLeft - INSTRUMENT PREVIOUS");
     printfPosition(6,23," ArrowRight - INSTRUMENT NEXT");
-    printfPosition(6,27,"     ESC    - RETURN");
+    printfPosition(6,24,"     ESC    - RETURN");
     printfPosition(6,25,"      +     - VOLUME UP");
     printfPosition(6,26,"      -     - VOLUME DOWN");
-    printfPosition(6,24,"      0     - VOLUME MUTE");
-    printfPosition(6,30,"    ANY KEY TO DISMISS");
+    printfPosition(6,27,"      Z     - RECORD");
+    printfPosition(6,28,"      X     - PLAY");
+    printfPosition(6,29,"      C     - OPEN");
+    printfPosition(6,31,"    ANY KEY TO DISMISS");
     for(int a=0;a<50;a++){
         if(temp.hints==FALSE)break;
         Sleep(100);
     }
-    for(int a=15;a<=30;a++) for(int b=6;b<40;b++) printfPosition(b,a," ");
+    for(int a=15;a<=31;a++) for(int b=6;b<40;b++) printfPosition(b,a," ");
     temp.hints=FALSE;
     return;
 }
@@ -524,10 +526,6 @@ int WindowGoodbye(){
             Sleep(100);
         }
         else printf("%c", x);
-        if(_kbhit()){
-            _getch();
-            return 0;
-        }
     }
     fclose(welcome);
     char name[64];
@@ -622,15 +620,15 @@ int WindowExitPrompt(){
     boxFill(88,23,16,3,settingVar.color[COLORSET_BUTTON_ACTIVE]);
     boxFill(66,23,16,3,settingVar.color[COLORSET_BUTTON_DEACTIVE]);
     printx(settingVar.color[COLORSET_TEXT_ACTIVE],settingVar.color[COLORSET_BUTTON_ACTIVE],94,24,"EXIT");
-    printx(settingVar.color[COLORSET_TEXT_DEACTIVE],settingVar.color[COLORSET_BUTTON_DEACTIVE],71,24,"CANCLE");
+    printx(settingVar.color[COLORSET_TEXT_DEACTIVE],settingVar.color[COLORSET_BUTTON_DEACTIVE],71,24,"CANCEL");
     while(1){
         int x=_getch();
         if(x==ENTER){
-            if(selection==FALSE) playNotif(NOTIF_CANCLE);
+            if(selection==FALSE) playNotif(NOTIF_CANCEL);
             clrscreen();
             return selection;
         }else if(x==ESCAPE){
-            playNotif(NOTIF_CANCLE);
+            playNotif(NOTIF_CANCEL);
             clrscreen();
             return 0;
         }else if(x==LEFT_ARROW||x==RIGHT_ARROW){
@@ -640,12 +638,12 @@ int WindowExitPrompt(){
                 boxFill(88,23,16,3,settingVar.color[COLORSET_BUTTON_ACTIVE]);
                 boxFill(66,23,16,3,settingVar.color[COLORSET_BUTTON_DEACTIVE]);
                 printx(settingVar.color[COLORSET_TEXT_ACTIVE],settingVar.color[COLORSET_BUTTON_ACTIVE],94,24,"EXIT");
-                printx(settingVar.color[COLORSET_TEXT_DEACTIVE],settingVar.color[COLORSET_BUTTON_DEACTIVE],71,24,"CANCLE");
+                printx(settingVar.color[COLORSET_TEXT_DEACTIVE],settingVar.color[COLORSET_BUTTON_DEACTIVE],71,24,"CANCEL");
             }else if(selection==FALSE){
                 boxFill(88,23,16,3,settingVar.color[COLORSET_BUTTON_DEACTIVE]);
                 boxFill(66,23,16,3,settingVar.color[COLORSET_BUTTON_ACTIVE]);
                 printx(settingVar.color[COLORSET_TEXT_DEACTIVE],settingVar.color[COLORSET_BUTTON_DEACTIVE],94,24,"EXIT");
-                printx(settingVar.color[COLORSET_TEXT_ACTIVE],settingVar.color[COLORSET_BUTTON_ACTIVE],71,24,"CANCLE");
+                printx(settingVar.color[COLORSET_TEXT_ACTIVE],settingVar.color[COLORSET_BUTTON_ACTIVE],71,24,"CANCEL");
             }
         }
     }
@@ -723,7 +721,7 @@ int WindowAbout(){
             clrscreen();
             return mcount;
         }else if(x==ESCAPE){
-            playNotif(NOTIF_CANCLE);
+            playNotif(NOTIF_CANCEL);
             clrscreen();
             return 2;
         }
@@ -748,22 +746,11 @@ int WindowAbout(){
 }
 
 int WindowUpdate(){
-    printfPosition(CENTER_OF_SCREEN,40,"CHECKING FOR UPDATES | ANY KEY TO ABORT");
-    char load[7][8]={"L      "," O     ","  A    ","   D   ","    I  ","     N ","      G"};
-    int loadVal=0;
-    int loadInv=1;
-    while(1){
-         printfPosition(CENTER_OF_SCREEN,42,load[loadVal]);
-         Sleep(125);
-         loadVal+=loadInv;
-         if(loadVal==6)loadInv=-1;
-         else if(loadVal==0)loadInv=1;
-         if(_kbhit()){
-            _getch();
-            playNotif(NOTIF_CANCLE);
-            return 0;
-         }
-    }
+    FILE * fp;
+    fp=fopen("upcheck.uc","w");
+    fclose(fp);
+    system("PianoWave.exe -window");
+    exit(0);
 }
 
 int WindowDLC(){
@@ -771,7 +758,10 @@ int WindowDLC(){
     char load[7][8]={"L      "," O     ","  A    ","   D   ","    I  ","     N ","      G"};
     int loadVal=0;
     int loadInv=1;
-    while(1){
+    int prog;
+    int ret=0;
+    Downloader("https://drive.google.com/uc?export=download&id=1kElGDrx6TjgN2FBenf7vVC8H2mXlfwnK","bin//testdlc.txt",2500,&prog,&ret);
+    while(ret==0){
          printfPosition(CENTER_OF_SCREEN,42,load[loadVal]);
          Sleep(125);
          loadVal+=loadInv;
@@ -779,11 +769,20 @@ int WindowDLC(){
          else if(loadVal==0)loadInv=1;
          if(_kbhit()){
             _getch();
-            playNotif(NOTIF_CANCLE);
+            playNotif(NOTIF_CANCEL);
             clrscreen();
             return 0;
          }
     }
+    clrscreen();
+    printfPosition(10,4,"DOWNLOAD CONTENT STATION");
+    cursor(10,5);
+    for(int a=0;a<150;a++) printf("%c",196);
+    cursor(10,42);
+    for(int a=0;a<150;a++) printf("%c",196);
+    //dloadInstr();
+    _getch();
+    return 0;
 }
 #define PRINT_SUBMENU 0
 #define ENTER_SUBMENU 1
@@ -792,7 +791,7 @@ int WindowDLC(){
 #define SUBMENU_ADVANCE 2
 #define SUBMENU_APPLY 0
 #define SUBMENU_DEFAULT 1
-#define SUBMENU_CANCLE 2
+#define SUBMENU_CANCEL 2
 #define SUBMENU_SAVE 3
 #define SUBMENU_EXIT 3
 int WindowSubMenu(int state,int submenu,int submenuTemp){
@@ -820,7 +819,7 @@ int WindowSubMenu(int state,int submenu,int submenuTemp){
                 int center=50;
                 char navbar[4][64]={"      APPLY      ",
                                     "     DEFAULT     ",
-                                    "      CANCLE     ",
+                                    "      CANCEL     ",
                                     "       SAVE      "};
                 char name[32]={0};
                 GetColorSetting(settingVar.colorPreset,&settingVar.color,&name);
@@ -849,7 +848,7 @@ int WindowSubMenu(int state,int submenu,int submenuTemp){
                 int center=50;
                 char navbar[3][64]={"      APPLY      ",
                                     "     DEFAULT     ",
-                                    "      CANCLE     "};
+                                    "      CANCEL     "};
                 for(int a=0;a<3;a++) printx((submenu==SUBMENU_SOUND)?settingVar.color[COLORSET_TEXT_DEACTIVE]:cgbg,(submenu==SUBMENU_SOUND)?settingVar.color[COLORSET_BUTTON_DEACTIVE]:cgbg,(a*18)+center,41,navbar[a]);
             }
             else if(loop[x]==SUBMENU_ADVANCE){
@@ -862,7 +861,7 @@ int WindowSubMenu(int state,int submenu,int submenuTemp){
                 int center=50;
                 char navbar[3][64]={"      APPLY      ",
                                     "     DEFAULT     ",
-                                    "      CANCLE     "};
+                                    "      CANCEL     "};
                 for(int a=0;a<3;a++) printx((submenu==SUBMENU_ADVANCE)?settingVar.color[COLORSET_TEXT_DEACTIVE]:cgbg,(submenu==SUBMENU_ADVANCE)?settingVar.color[COLORSET_BUTTON_DEACTIVE]:cgbg,(a*18)+center,41,navbar[a]);
             }
             else if(loop[x]==SUBMENU_EXIT){
@@ -889,7 +888,7 @@ int WindowSubMenu(int state,int submenu,int submenuTemp){
             boolean custom=FALSE;
             char navbar[4][64]={"      APPLY      ",
                                 "     DEFAULT     ",
-                                "      CANCLE     ",
+                                "      CANCEL     ",
                                 "       SAVE      "};
             while(1){
                 if(count!=countTemp){
@@ -911,7 +910,7 @@ int WindowSubMenu(int state,int submenu,int submenuTemp){
                 }
                 else if(x==ESCAPE){
                     boxLineErase(40,(countTemp*2)+7,20,1);
-                    playNotif(NOTIF_CANCLE);
+                    playNotif(NOTIF_CANCEL);
                     WindowSubMenu(PRINT_SUBMENU,SUBMENU_DISPLAY,SUBMENU_DISPLAY);
                     printx(cgbg,cgbg,47,41," ");
                     printx(cgbg,cgbg,123,41," ");
@@ -984,10 +983,10 @@ int WindowSubMenu(int state,int submenu,int submenuTemp){
                     }
                 }
                 if((x==ENTER&&count==14)||(x==ENTER&&count>=0&&count<14)){
-                    if(navVal==SUBMENU_CANCLE&&count==14){
+                    if(navVal==SUBMENU_CANCEL&&count==14){
                         printx(cgbg,cgbg,47,41," ");
                         printx(cgbg,cgbg,123,41," ");
-                        playNotif(NOTIF_CANCLE);
+                        playNotif(NOTIF_CANCEL);
                         WindowSubMenu(PRINT_SUBMENU,SUBMENU_DISPLAY,SUBMENU_DISPLAY);
                         return 0;
                     }else if((navVal==SUBMENU_APPLY&&count==14)||(x==ENTER&&count>=0&&count<14)){
@@ -1027,7 +1026,7 @@ int WindowSubMenu(int state,int submenu,int submenuTemp){
                         printx(cgbg,cgbg,62,32,"You must restart to change the effect");
                     }else if(navVal==SUBMENU_SAVE){
                         playNotif(NOTIF_ENTER);
-                        boolean cancled=FALSE;
+                        boolean CANCELd=FALSE;
                         char dir[32];
                         boxLine(75,37,20,1);
                         printfPosition(75,36,"THEME NAME :");
@@ -1038,8 +1037,8 @@ int WindowSubMenu(int state,int submenu,int submenuTemp){
                             char x=_getch();
                             if(x==ENTER) break;
                             if(x==ESCAPE){
-                                cancled=TRUE;
-                                goto CANCLE;
+                                CANCELd=TRUE;
+                                goto CANCEL;
                             }
                             else if(x==BACKSPACE&&val>0){
                                 playNotif(NOTIF_TICK);
@@ -1063,9 +1062,9 @@ int WindowSubMenu(int state,int submenu,int submenuTemp){
                         colorPresetTemp=settingVar.colorPreset;
                         WindowSubMenu(PRINT_SUBMENU,SUBMENU_DISPLAY,SUBMENU_DISPLAY);
                         custom=FALSE;
-                        CANCLE:;
-                        if(cancled==TRUE){
-                            playNotif(NOTIF_CANCLE);
+                        CANCEL:;
+                        if(CANCELd==TRUE){
+                            playNotif(NOTIF_CANCEL);
                             cursorvisibility(HIDE_CURSOR);
                             boxFill(75,36,21,4,settingVar.color[COLORSET_GLOBAL_BG]);
                         }
@@ -1085,7 +1084,7 @@ int WindowSubMenu(int state,int submenu,int submenuTemp){
             float temp_susFact=pno.sustainFactor;
             char navbar[3][64]={"      APPLY      ",
                                 "     DEFAULT     ",
-                                "      CANCLE     "};
+                                "      CANCEL     "};
             for(int a=0;a<3;a++) printx((submenu==SUBMENU_SOUND)?settingVar.color[COLORSET_TEXT_DEACTIVE]:cgbg,(submenu==SUBMENU_SOUND)?settingVar.color[COLORSET_BUTTON_DEACTIVE]:cgbg,(a*18)+center,41,navbar[a]);
             int count=0;
             int countTemp=-1;
@@ -1121,7 +1120,7 @@ int WindowSubMenu(int state,int submenu,int submenuTemp){
                 }
                 else if(x==ESCAPE){
                     boxLineErase(40,(countTemp*2)+7,20,1);
-                    playNotif(NOTIF_CANCLE);
+                    playNotif(NOTIF_CANCEL);
                     if(count==8){
                         printx(settingVar.color[COLORSET_TEXT_DEACTIVE],settingVar.color[COLORSET_BUTTON_DEACTIVE],(navValTemp*18)+center,41,navbar[navValTemp]);
                         printx(cgbg,cgbg,47,41," ");
@@ -1155,8 +1154,8 @@ int WindowSubMenu(int state,int submenu,int submenuTemp){
                         printfPosition(42,20,"%3d",Bpm);
                         printfPosition(42,22,"%3d",sust);
                         playNotif(NOTIF_OPEN);
-                    }else if(count==8&&navVal==SUBMENU_CANCLE){ //CANCLE
-                        playNotif(NOTIF_CANCLE);
+                    }else if(count==8&&navVal==SUBMENU_CANCEL){ //CANCEL
+                        playNotif(NOTIF_CANCEL);
                     }else {
                         notif.Preset=notifVal;
                         met.Preset=metVal;
@@ -1336,7 +1335,7 @@ int WindowSubMenu(int state,int submenu,int submenuTemp){
             int utc=settingVar.clockoffset;
             char navbar[3][64]={"      APPLY      ",
                                 "     DEFAULT     ",
-                                "      CANCLE     "};
+                                "      CANCEL     "};
             for(int a=0;a<3;a++) printx((submenu==SUBMENU_ADVANCE)?settingVar.color[COLORSET_TEXT_DEACTIVE]:cgbg,(submenu==SUBMENU_ADVANCE)?settingVar.color[COLORSET_BUTTON_DEACTIVE]:cgbg,(a*18)+center,41,navbar[a]);
             int count=0;
             int countTemp=-1;
@@ -1367,10 +1366,10 @@ int WindowSubMenu(int state,int submenu,int submenuTemp){
                     count++;
                     if(count>3) count=0;
                 }
-                else if(x==ESCAPE||(count==3&&navVal==SUBMENU_CANCLE&&x==ENTER)){
+                else if(x==ESCAPE||(count==3&&navVal==SUBMENU_CANCEL&&x==ENTER)){
                     if (countTemp==2) boxLineErase(40,(countTemp*2)+7,40,1);
                     else if(countTemp!=2) boxLineErase(40,(countTemp*2)+7,20,1);
-                    playNotif(NOTIF_CANCLE);
+                    playNotif(NOTIF_CANCEL);
                     if(count==3){
                         printx(settingVar.color[COLORSET_TEXT_DEACTIVE],settingVar.color[COLORSET_BUTTON_DEACTIVE],(navValTemp*18)+center,41,navbar[navValTemp]);
                         printx(cgbg,cgbg,47,41," ");
@@ -1443,8 +1442,8 @@ int WindowSubMenu(int state,int submenu,int submenuTemp){
                             playNotif(NOTIF_SAVED);
                             break;
                         }else if(x==ESCAPE){
-                            playNotif(NOTIF_CANCLE);
-                            goto CANCLED;
+                            playNotif(NOTIF_CANCEL);
+                            goto CANCELD;
                         }else if(x==BACKSPACE&&loop>0){
                             playNotif(NOTIF_TICK);
                             printf("\b \b");
@@ -1460,7 +1459,7 @@ int WindowSubMenu(int state,int submenu,int submenuTemp){
                     }
                     for(int a=0;a<64;a++)myName[a]=0;
                     strcat(&myName,myNameTemp);
-                    CANCLED:;
+                    CANCELD:;
                     cursorvisibility(HIDE_CURSOR);
                     cursor(42,(count*2)+8);
                     for(int a=0;a<32;a++) printf(" ");
@@ -1552,7 +1551,7 @@ int WindowSetting(){
             printfPosition(79,4,"%c",175);
         }else if(x==ESCAPE){
                 clrscreen();
-                playNotif(NOTIF_CANCLE);
+                playNotif(NOTIF_CANCEL);
                 return 0;
         }
     }
@@ -1633,6 +1632,10 @@ void PianoDisp(const int state,const int locX,const int locY){
 DWORD WINAPI WindowPianoPlayer(void){
     clrscreen();
     playNotif(NOTIF_MAXIMAZE);
+    rec.openState=FALSE;
+    rec.recState=FALSE;
+    boolean openState=FALSE;
+    boolean recState=FALSE;
     int piano_posX=41;
     int piano_posY=13;
     const int sizeX=7;
@@ -1648,6 +1651,7 @@ DWORD WINAPI WindowPianoPlayer(void){
                               "   6   ",
                               "   7   "};
     footer();
+    printfPosition(CENTER_OF_SCREEN,45,"F1 - HINTS");
     for(int a=0;a<7;a++){
         const int navPosX=startPosX+(sizeX+a)+((gap+sizeX)*a);
         if(a!=(pno.octv-1)) boxFill(navPosX,navPosY,sizeX,sizeY,settingVar.color[COLORSET_BUTTON_DEACTIVE]);
@@ -1657,6 +1661,7 @@ DWORD WINAPI WindowPianoPlayer(void){
         else if(a==(pno.octv-1)) printfColor(settingVar.color[COLORSET_TEXT_ACTIVE],settingVar.color[COLORSET_BUTTON_ACTIVE],myMenu[a]);
     }
     boxFill(111,9,17,3,(pno.sustain==TRUE)?settingVar.color[COLORSET_BUTTON_ACTIVE]:settingVar.color[COLORSET_BUTTON_DEACTIVE]);
+    boxFill(91,9,19,3,settingVar.color[COLORSET_STATIC_BUTTON]);
     cursor(114,10);
     if(pno.sustain==TRUE) printfColor(settingVar.color[COLORSET_TEXT_ACTIVE],settingVar.color[COLORSET_BUTTON_ACTIVE],"SUSTAIN: ON");
     else if(pno.sustain==FALSE) printfColor(settingVar.color[COLORSET_TEXT_DEACTIVE],settingVar.color[COLORSET_BUTTON_DEACTIVE],"SUSTAIN:OFF");
@@ -1666,6 +1671,19 @@ DWORD WINAPI WindowPianoPlayer(void){
     int mybar=(pno.globalVol/100)*16;
     for(int a=0;a<=mybar;a++) printfPosition(133,30-a,"%c",177);
     boxFill(89,33,39,3,settingVar.color[COLORSET_STATIC_BUTTON]);
+    boxFill(41,33,7,3,settingVar.color[COLORSET_BUTTON_DEACTIVE]);
+    boxFill(49,33,7,3,settingVar.color[COLORSET_BUTTON_DEACTIVE]);
+    boxFill(57,33,31,3,settingVar.color[COLORSET_STATIC_BUTTON]);
+    if(rec.index!=0){
+        char namex[128];
+        getConfigDataSaved("bin//saved//config.con",rec.index,namex);
+        printx(settingVar.color[COLORSET_GLOBAL_FG],settingVar.color[COLORSET_STATIC_BUTTON],60,34,namex);
+    }
+    else if(rec.index==0) {
+        printx(settingVar.color[COLORSET_GLOBAL_FG],settingVar.color[COLORSET_STATIC_BUTTON],60,34,"X/C To Open Files");
+    }
+    printx(settingVar.color[COLORSET_TEXT_DEACTIVE],settingVar.color[COLORSET_BUTTON_DEACTIVE],43,34,"REC");
+    printx(settingVar.color[COLORSET_TEXT_DEACTIVE],settingVar.color[COLORSET_BUTTON_DEACTIVE],50,34,(rec.index==0)?"OPEN":"PLAY");
     int len=strlen(pno.namein);
     int boxlen=(39-len)/2;
     cursor(boxlen+89,34);
@@ -1674,7 +1692,6 @@ DWORD WINAPI WindowPianoPlayer(void){
     cursor(84,4); printfColor((met.state==FALSE)?settingVar.color[COLORSET_TEXT_DEACTIVE]:settingVar.color[COLORSET_TEXT_ACTIVE],(met.state==FALSE)?settingVar.color[COLORSET_BUTTON_DEACTIVE]:settingVar.color[COLORSET_BUTTON_ACTIVE],"BPM");
     cursor(84,3); printfColor((met.state==FALSE)?settingVar.color[COLORSET_TEXT_DEACTIVE]:settingVar.color[COLORSET_TEXT_ACTIVE],(met.state==FALSE)?settingVar.color[COLORSET_BUTTON_DEACTIVE]:settingVar.color[COLORSET_BUTTON_ACTIVE],"%3.0f",(float)met.Bpm);
     PianoDisp(INIT_PIANO,piano_posX,piano_posY);
-    printfPosition(CENTER_OF_SCREEN,45,"F1 - HINTS");
     temp.sust=pno.sustain;
     temp.Octv=pno.octv;
     temp.Voltemp=pno.globalVol;
@@ -1682,6 +1699,7 @@ DWORD WINAPI WindowPianoPlayer(void){
     temp.Preset=pno.Preset;
     temp.met=met.state;
     temp.mute=pno.mute;
+    boolean recPlayTemp=rec.play;
     while(pno.enable==TRUE){
         printClock();
         PianoDisp(UPDATE_PIANO,41,13);
@@ -1745,9 +1763,91 @@ DWORD WINAPI WindowPianoPlayer(void){
             temp.met=met.state;
         }
         if(temp.hints==TRUE) printHints();
+        if(rec.openState==TRUE) promptFile();
+        if(openState!=rec.openState){
+            openState=rec.openState;
+            boxFill(49,33,7,3,(openState==TRUE)?settingVar.color[COLORSET_BUTTON_ACTIVE]:settingVar.color[COLORSET_BUTTON_DEACTIVE]);
+            printx((openState==TRUE)?settingVar.color[COLORSET_TEXT_ACTIVE]:settingVar.color[COLORSET_TEXT_DEACTIVE],(openState==TRUE)?settingVar.color[COLORSET_BUTTON_ACTIVE]:settingVar.color[COLORSET_BUTTON_DEACTIVE],50,34,"PLAY");
+            Sleep(200);
+            rec.openState=FALSE;
+        }
+        if(rec.recState!=recState){
+            recState=rec.recState;
+            if(rec.recState==TRUE){
+                recState=rec.recState;
+                rec.record=FALSE;
+                boxFill(41,33,7,3,(recState==TRUE)?settingVar.color[COLORSET_BUTTON_ACTIVE]:settingVar.color[COLORSET_BUTTON_DEACTIVE]);
+                printx((recState==TRUE)?settingVar.color[COLORSET_TEXT_ACTIVE]:settingVar.color[COLORSET_TEXT_DEACTIVE],(recState==TRUE)?settingVar.color[COLORSET_BUTTON_ACTIVE]:settingVar.color[COLORSET_BUTTON_DEACTIVE],43,34,"REC");
+                int tempmet=met.state;
+                met.state=FALSE;
+                printx(settingVar.color[(recState==TRUE)?COLORSET_GLOBAL_FG:COLORSET_STATIC_BUTTON],settingVar.color[COLORSET_STATIC_BUTTON],60,34,"RECORD IN :      ");
+                int cd=met.Beat;
+                int metLast=met.BeatCount;
+                met.mThread=CreateThread(NULL, 0, MetronomePlayer, NULL, 0, NULL);
+                rec.fin=FALSE;
+                while(1){
+                    if(met.BeatCount!=metLast){
+                        cursor(70,34);
+                        printfColor(settingVar.color[COLORSET_GLOBAL_FG],settingVar.color[COLORSET_STATIC_BUTTON],"%d",cd);
+                        cd--;
+                        if(cd<0){
+                            break;
+                        }
+                        metLast=met.BeatCount;
+                    }else if(rec.fin==TRUE){
+                        goto CANCLED;
+                        break;
+                    }
+                }
+            RECORDING:
+                cursor(60,34);
+                printx(settingVar.color[COLORSET_GLOBAL_FG],settingVar.color[COLORSET_STATIC_BUTTON],60,34,"                        ");
+                printx(settingVar.color[COLORSET_GLOBAL_FG],settingVar.color[COLORSET_STATIC_BUTTON],60,34,"RECORDING               ");
+                printx((recState==TRUE)?settingVar.color[COLORSET_TEXT_ACTIVE]:settingVar.color[COLORSET_TEXT_DEACTIVE],(recState==TRUE)?settingVar.color[COLORSET_BUTTON_ACTIVE]:settingVar.color[COLORSET_BUTTON_DEACTIVE],42,34,"STOP");
+                record();
+                goto ENDTHIS;
+            CANCLED:
+                cursor(60,34);
+                printx(settingVar.color[COLORSET_GLOBAL_FG],settingVar.color[COLORSET_STATIC_BUTTON],60,34,"                        ");
+                if(rec.index!=0){
+                    char namex[128];
+                    getConfigDataSaved("bin//saved//config.con",rec.index,namex);
+                    printx(settingVar.color[COLORSET_GLOBAL_FG],settingVar.color[COLORSET_STATIC_BUTTON],60,34,namex);
+                }
+                else if(rec.index==0) {
+                    printx(settingVar.color[COLORSET_GLOBAL_FG],settingVar.color[COLORSET_STATIC_BUTTON],60,34,"X/C To Open Files");
+                }
+                rec.recState=FALSE;
+            ENDTHIS:;
+                if(tempmet==FALSE) met.state=FALSE;
+                rec.timeInit=clock();
+            }
+            else if(recState==FALSE){
+                boxFill(41,33,7,3,(recState==TRUE)?settingVar.color[COLORSET_BUTTON_ACTIVE]:settingVar.color[COLORSET_BUTTON_DEACTIVE]);
+                printx((recState==TRUE)?settingVar.color[COLORSET_TEXT_ACTIVE]:settingVar.color[COLORSET_TEXT_DEACTIVE],(recState==TRUE)?settingVar.color[COLORSET_BUTTON_ACTIVE]:settingVar.color[COLORSET_BUTTON_DEACTIVE],43,34,"REC");
+                if(rec.record==TRUE){
+                    printx(settingVar.color[COLORSET_GLOBAL_FG],settingVar.color[COLORSET_STATIC_BUTTON],60,34,"SAVING    ");
+                    rec.openState=TRUE;
+                    saveFile();
+                    rec.openState=FALSE;
+                }
+            }
+        }
+        if(rec.record==TRUE&&rec.recState==TRUE){
+            rec.time=clock()-rec.timeInit;
+            float recordTime=(float)rec.time/CLOCKS_PER_SEC;
+            cursor(75,34);printfColor(settingVar.color[COLORSET_GLOBAL_FG],settingVar.color[COLORSET_STATIC_BUTTON],"%0.2f",recordTime);
+        }
+        if(rec.play!=recPlayTemp){
+            boxFill(49,33,7,3,(rec.play==TRUE)?settingVar.color[COLORSET_BUTTON_ACTIVE]:settingVar.color[COLORSET_BUTTON_DEACTIVE]);
+            printx((rec.play==TRUE)?settingVar.color[COLORSET_TEXT_ACTIVE]:settingVar.color[COLORSET_TEXT_DEACTIVE],(rec.play==TRUE)?settingVar.color[COLORSET_BUTTON_ACTIVE]:settingVar.color[COLORSET_BUTTON_DEACTIVE],50,34,(rec.play==TRUE)?"STOP":"PLAY");
+            recPlayTemp=rec.play;
+        }
+
     }
     clrscreen();
     playNotif(NOTIF_MINIMAZE);
     return 0;
 }
+
 #endif

@@ -577,8 +577,14 @@ boolean readAutoState(){
     char num;
     fscanf(fp,"%c",&num);
     fclose(fp);
-    if(num=='1') return TRUE;
-    else return FALSE;
+    if(num=='1')return TRUE;
+    else{
+        if(CheckFile("upcheck.uc")==RETURN_FILE_EXIST) {
+                remove("upcheck.uc");
+                return TRUE;
+        }
+        else return FALSE;
+    }
 }
 
 void getSetting(){
@@ -665,87 +671,6 @@ int setShortcut() {
     system("cscript CreateShortcut.vbs");
     system("del CreateShortcut.vbs");
     return 0;
-}
-
-//Belum Beres
-DWORD WINAPI HttpDownloader(void){
-    FILE *fp;
-    HINTERNET hOpen, hURL;
-    const int numRead = 99;
-    char file[numRead];
-    unsigned long read;
-    hOpen = InternetOpen("Default_User_Agent", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0 );
-    if(!hOpen) return ERROR_INET_NO_INTERNET;
-    DWORD rec_timeout = 200 * 1000;					// override the 10 second timeout
-    InternetSetOption(hOpen, INTERNET_OPTION_RECEIVE_TIMEOUT, &rec_timeout, sizeof(rec_timeout));
-    hURL = InternetOpenUrl( hOpen,url,NULL, 0, INTERNET_FLAG_KEEP_CONNECTION, 0 );
-    if(!hURL) return ERROR_INET_CONNECTION_TIMEOUT;
-    fp = fopen(dir_filename, "wb");
-    DWORD dwRead;
-    float filesize=0,speed=0,fmax;
-    char *n;
-    char *n2;
-    float fmaxsize=sizeBita/100;
-    if(fmaxsize>=10000){
-        fmax=fmaxsize/10000;
-        n2="MB";
-    }else if(fmaxsize<10000){
-        n2="KB";
-    fmax=fmaxsize/10;
-    }
-    //printf("\nSIZE (byte) : %d | Converted : %0.2f %s",sizeBita,fmax,n2);
-    CONSOLE_SCREEN_BUFFER_INFO sBi;
-    //printf("\nSTART DOWNLOADING\n");
-    GetConsoleScreenBufferInfo(Handle.stdOutput,&sBi);
-    if(state_of_disp==TRUE) downloadBar(INIT_DBAR,sBi.dwCursorPosition,0,0);
-    clock_t myTime,iniTime;
-    myTime=clock();
-    iniTime=clock();
-    float tempTime=((float)myTime/CLOCKS_PER_SEC)+0.5;
-    while ( InternetReadFile(hURL, file, numRead - 1 , &read) && read != 0 )
-    {
-        fwrite(file, sizeof(char), read, fp);
-        file[read] = '\0';
-        myTime=clock();filesize++;speed++;
-        float fsize;
-        if(filesize>=10000){
-            fsize=filesize/10000;
-            n="MB";
-        }else if(filesize<10000){
-            n="KB";
-        fsize=filesize/10;
-        }
-        COORD pos;
-        pos.Y=sBi.dwCursorPosition.Y+3;
-        if(filesize<=fmaxsize) {
-
-            pos.X=sBi.dwCursorPosition.X+1;
-            SetConsoleCursorPosition(Handle.stdOutput,pos);
-            if(state_of_disp==TRUE) printf("%0.2f%s of %0.2f%s  ",fsize,n,fmax,n2);
-        }
-        float second=(float)myTime/CLOCKS_PER_SEC;
-        if(second>=tempTime){
-            if(speed>=10000){
-                speed=speed/10000;
-                n="MBps";
-            }else if(speed<10000){
-                n="KBps";
-            speed=speed/10;
-            }
-            pos.X=sBi.dwCursorPosition.X+23;
-            SetConsoleCursorPosition(Handle.stdOutput,pos);
-            if(state_of_disp==TRUE) printf("%0.2f%s  ",speed,n);
-            tempTime=second+1;
-            speed=0;
-            if(state_of_disp==TRUE) downloadBar(LOAD_DBAR,sBi.dwCursorPosition,filesize,fmaxsize);
-        }
-    }
-    myTime=clock()-iniTime;
-    fclose(fp);
-    free(file);
-    InternetCloseHandle(hOpen);
-    InternetCloseHandle(hURL);
-    //printf("\nFINISH | Time Elapsed : %0.2f Sec\n",((float)(myTime) / CLOCKS_PER_SEC));
 }
 
 #include "shared/errorhandling.h"

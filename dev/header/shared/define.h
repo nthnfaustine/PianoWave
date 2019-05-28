@@ -12,8 +12,8 @@
 #pragma comment (lib, "wininet.lib")
 
 //METADATA
-#define VERSION "3.14" //CURRENT VERSION
-#define BUILD "Beta" //BUILD VERSION
+#define VERSION version //CURRENT VERSION
+#define BUILD build //BUILD VERSION
 #define BACKEND "Alfian Badrul Isnan"  //BACKEND NAME
 #define FRONTEND "Nathaniel Faustine" //FRONTEND NAME
 
@@ -72,6 +72,8 @@
 #define BACKSPACE 8
 #define SPACE 32
 #define F1_BUTTON 59
+#define DELETE_BUTTON 83
+#define ALT 224
 
 //SETTING DEFINITION
 //COLOR SETTING

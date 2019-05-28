@@ -1,0 +1,71 @@
+# depslib dependency file v1.0
+1558078011 source:e:\programming\pianowave\dev\properties.rc
+	"resource.h"
+
+1557487170 e:\programming\pianowave\dev\resource.h
+
+1559021290 source:e:\programming\pianowave\main_launcher.c
+	"dev/header/launcher_prototyping.h"
+
+1556322977 source:e:\programming\pianowave\dev\header\shared\zip.c
+	<errno.h>
+	<sys/stat.h>
+	<time.h>
+	<direct.h>
+	<unistd.h>
+	"miniz.h"
+	"zip.h"
+
+1556322977 e:\programming\pianowave\dev\header\shared\miniz.h
+	<stdlib.h>
+	<time.h>
+	<assert.h>
+	<string.h>
+	<stdio.h>
+	<sys/stat.h>
+	<sys/utime.h>
+	<sys/utime.h>
+	<sys/utime.h>
+	<utime.h>
+	<utime.h>
+
+1557352089 e:\programming\pianowave\dev\header\shared\zip.h
+	<string.h>
+	<sys/types.h>
+
+1559022338 e:\programming\pianowave\dev\header\launcher_prototyping.h
+	"shared/define.h"
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<wininet.h>
+	<conio.h>
+	<time.h>
+	"shared/zip.h"
+	"shared/errorhandling.h"
+
+1558521735 e:\programming\pianowave\dev\header\shared\include.h
+	"define.h"
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<wininet.h>
+	<SFML/Audio.h>
+	<conio.h>
+	<time.h>
+	"zip.h"
+	"globalvariable.h"
+	"backend.h"
+	"frontend.h"
+	"errorhandling.h"
+
+1558983536 e:\programming\pianowave\dev\header\shared\define.h
+
+1558555023 e:\programming\pianowave\dev\header\shared\globalvariable.h
+
+1558521759 e:\programming\pianowave\dev\header\shared\errorhandling.h
+
+1558591912 e:\programming\pianowave\dev\header\shared\backend.h
+
+1558590040 e:\programming\pianowave\dev\header\shared\frontend.h
+

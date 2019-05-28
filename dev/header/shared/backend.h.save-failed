@@ -430,25 +430,24 @@ DWORD WINAPI downloadThread(LPVOID ptr){
     InternetSetOption(hURL, INTERNET_OPTION_CONNECT_TIMEOUT, &rec_timeout, sizeof(rec_timeout));
     FILE *fp;
     fp = fopen(dir, "wb");
-    int sze=size;
-    float x=0, y=(float)sze/100;
+    int x=0, y=(*size)/100;
     while (*ret=InternetReadFile(hURL, file, numRead - 1 , &read) && read != 0 )
     {
         fwrite(file, sizeof(char), read, fp);
         file[read] = '\0';
         x++;
-        if((x/y)>=1)*Uptr=sze;
+        if((x/y)>=1)*Uptr=*size;
         else *Uptr=x*100;
     }
     fclose(fp);
+    free(file);
     InternetCloseHandle(hOpen);
     InternetCloseHandle(hURL);
-    if((x/y)>=0.95){
-        *Uptr=sze;
-        *ret=1;
+    if((x/y)>=0.98){
+        *Uptr=*size;
         return *ret;
     }
-    else if((x/y)<0.95){
+    else if((x/y)<0.98){
         remove(dir);
         *ret=-3;
         return *ret;
@@ -1161,7 +1160,7 @@ int del_line(char fname[MAX],int lno)//file name, line
 HANDLE Downloader(char * url, char *dir, int * size, unsigned ptrToProg,int ret){
     unsigned *ptr[3]; //Membuat Array Of Pointer
     ptr[0]=url; //Memasukkan Pointer Char Of String (url telah berbentuk Pointer Array Of String)
-    ptr[1]=size; //Memasukkan pointer dari Pointer Size
+    ptr[1]=&size; //Memasukkan pointer dari Pointer Size
     ptr[2]=ptrToProg; //Memasukkan Nilai Pointer dari prog (yang sudah diubah kedalam Pointer)
     ptr[3]=dir;
     ptr[4]=ret;
@@ -1170,72 +1169,5 @@ HANDLE Downloader(char * url, char *dir, int * size, unsigned ptrToProg,int ret)
     Sleep(10);
     return hThread;
 }
-/*
-void dloadInstr(){
-    FILE *myFile;
-    char confInstr[512];
-    int loop=0;
-    int loc[512];
-    int rr[512];
-    boolean rchng=TRUE;
-    myFile=fopen("bin\\data\\sample\\Instrument\\config.con","r");
-    if(myFile==NULL) error(NO_CONFIG_FILE);
-    while(1){
-        int x=fgetc(myFile);
-        if(x==EOF)break;
-        else if(x=='\n')rchng=TRUE;
-        else if(rchng==TRUE&&x!=' '){
-            confInstr[loop]=x;
-            loop++;
-        }else if(x==' ')rchng=FALSE;
-    }
-    //Read String;
-    int avabsize=loop/3;
-    confInstr[loop]='\0';
-    fclose(myFile);
-    rchng=FALSE;
-    int mycount=0;
-    FILE * myInstr;
-    myInstr=fopen("bin\\testdlc.txt","r");
-    if(myInstr==NULL) error(NO_CONFIG_FILE);
-    int index=0;boolean looptest=FALSE;
-    loop=0;int avab=0,looptemp=0;
-    loc[0]=0;
-    while(1){
-        int x=fgetc(myInstr);
-        if(x==EOF)break;
-        if(rchng==TRUE){
-            if(x=='\n'){
-                if(looptest==TRUE){
-                    looptest=FALSE;
-                    loop=looptemp;
-                }
-                index++;
-                loc[index]=loop+1;
-                avab=0;
-            }
-            rr[loop]=x;
-            loop++;avab++;
-            if(avab==1){
-                for(int a=0;a<avabsize;a++){
-                    if(rr[loop-3]==confInstr[a*3]&&rr[loop-2]==confInstr[a*3+1]&&rr[loop-1]==confInstr[a*3+2]){
-                        looptest=TRUE;
-                        index--;
-                        looptemp=loop-3;
-                        break;
-                   }
-                }
-            }
-        };
-        if(x=='~')mycount++;
-        if(mycount==4&&rchng==FALSE){
-            if(x==':')rchng=TRUE;
-        }else if(mycount==5)rchng=FALSE;
-    }
-    fclose(myFile);
-    remove("bin\\testdlc.txt");
-    return 0;
-}
-*/
 
 #endif // BACKEND_H_INCLUDED

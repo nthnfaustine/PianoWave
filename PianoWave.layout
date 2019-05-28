@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<FileVersion major="1" minor="0" />
+	<ActiveTarget name="Debug" />
+	<File name="dev\header\shared\errorhandling.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="193" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="dev\header\main_prototyping.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="266" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="dev\header\shared\backend.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="42959" topLine="317" />
+		</Cursor>
+		<Folding>
+			<Collapse line="360" />
+			<Collapse line="402" />
+			<Collapse line="462" />
+			<Collapse line="467" />
+			<Collapse line="516" />
+			<Collapse line="544" />
+			<Collapse line="640" />
+			<Collapse line="682" />
+			<Collapse line="699" />
+			<Collapse line="800" />
+			<Collapse line="817" />
+			<Collapse line="853" />
+			<Collapse line="876" />
+			<Collapse line="895" />
+			<Collapse line="941" />
+			<Collapse line="952" />
+			<Collapse line="1061" />
+			<Collapse line="1118" />
+			<Collapse line="1160" />
+		</Folding>
+	</File>
+	<File name="dev\header\shared\define.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="378" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="dev\header\shared\frontend.h" open="1" top="1" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="26575" topLine="531" />
+		</Cursor>
+		<Folding>
+			<Collapse line="509" />
+			<Collapse line="542" />
+			<Collapse line="615" />
+			<Collapse line="651" />
+			<Collapse line="747" />
+			<Collapse line="796" />
+			<Collapse line="1500" />
+			<Collapse line="1514" />
+			<Collapse line="1564" />
+			<Collapse line="1631" />
+		</Folding>
+	</File>
+	<File name="dev\header\shared\globalvariable.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="208" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="dev\header\shared\include.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="891" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="main_program.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="273" topLine="36" />
+		</Cursor>
+	</File>
+	<EditorTabsLayout layout="08a680505cecc6480000437700000003=0;PianoWave:main_program.c,*2;PianoWave:dev\header\shared\frontend.h,3;PianoWave:dev\header\shared\include.h|0e0f77b85cecd2cc0031270c00000003=+1;PianoWave:dev\header\shared\backend.h@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=180;besth=180;minw=180;minh=180;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=08a680505cecc6480000437700000003;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=0e0f77b85cecd2cc0031270c00000003;caption=;state=2098172;dir=4;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(4,0,0)=469|dock_size(5,0,0)=202|" />
+</CodeBlocks_layout_file>

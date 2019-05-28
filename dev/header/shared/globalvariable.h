@@ -6,7 +6,7 @@
     Header Untuk menyimpan Variable global yang digunakan disetiap header
 */
 
-char version    [8] = "2.26";
+char version    [8] = "3.40";
 char build      [8] = "Beta";
 
 typedef struct {
@@ -28,6 +28,23 @@ typedef struct{
     boolean ScreenMode;
 }SETTING;
 SETTING settingVar;
+
+typedef struct{
+    int inputaddr;
+    int inputstate[INPUT_LEN];
+    int last_octv;
+    int index;
+    clock_t time;
+    clock_t timeInit;
+    boolean openState;
+    boolean recState;
+    boolean fin;
+    boolean record;
+    boolean read;
+    boolean play;
+    HANDLE Thread;
+}RECORDER;
+RECORDER rec;
 
 typedef struct{
     int state[2][INPUT_LEN];
