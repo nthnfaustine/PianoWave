@@ -1,7 +1,8 @@
 # PianoWave
 PianoWave 3.40
-Pengembang	- Alfian Badrul Isnan	(frontend)	github.com/alfianisnan26
-		- Nathaniel Faustine	(backend)	github.com/nthnfaustine
+Pengembang
+- Alfian Badrul Isnan	(frontend)	https://github.com/alfianisnan26
+- Nathaniel Faustine	(backend)	https://github.com/nthnfaustine
 
 Deskrpisi :	
 PIANO WAVE – Merupakan aplikasi PianoPlayer yang memiliki Banyak Instrumen yang dapat didunduh oleh pengguna.
@@ -11,11 +12,11 @@ dan memainkan karyanya.
 
 
 Link :
-	Proyek Jadi	bit.ly/PianoWave
-	All Dev Files	bit.ly/prokhirptkom
-	Source Code	bit.ly/PWsource
-	Offline Install	bit.ly/PWoffline
-	Documentation	bit.ly/PWdoc
+- Proyek Jadi     : https://bit.ly/PianoWave
+- All Dev Files   : https://bit.ly/prokhirptkom
+- Source Code     : https://bit.ly/PWsource
+- Offline Install : https://bit.ly/PWoffline
+- Documentation   :	https://bit.ly/PWdoc
 
 Cara me-recompile proyek
 
@@ -23,15 +24,17 @@ Perlu diperhatikan proyek ini dikembangkan pada platform Windows khususya Window
 dengan demikian, proyek ini optimal saat di jalankan pada Windows 10
 
 Library Yang digunakan adalah sebagai berikut :
+
 SFML (binding C, CSFML)
-	link : https://www.sfml-dev.org/download/csfml/
-	Library ini berfungsi sebagai driver suara (mixer)
+- link : https://www.sfml-dev.org/download/csfml/
+- Library ini berfungsi sebagai driver suara (mixer)
+
 MINIZIP	
-	link : http://www.winimage.com/zLibDll/minizip.html
-	Library ini berfungsi sebagai zipping tools (zip/unzip file terkompresi)
+- link : http://www.winimage.com/zLibDll/minizip.html
+- Library ini berfungsi sebagai zipping tools (zip/unzip file terkompresi)
 
 DISARANKAN MENGGUNAKAN TEKS EDITOR CODE::BLOCK 
-	link :http://www.codeblocks.org/
+- link :http://www.codeblocks.org/
 
 Pengaturan Pada Codeblock dapat dilihat pada folder Install-Guide pada link All Dev Files
 
